@@ -18,13 +18,20 @@ class ListView extends React.Component {
 
     updateList = (event) =>{
         if (event.keyCode === 13){  
-            this.state.list.push(new TodoModel(event.target.value, true))         
+            this.state.list.push(new TodoModel(event.target.value, false))         
             this.setState({
                 list: this.state.list
             }); 
         }       
     }
 
+    complete = (text, isDone) =>{
+       
+        this.state.list.find(todo => todo.text === text).isCompleted =  isDone ? false:true
+        this.setState({               
+            list: this.state.list
+        });
+    }
    
 
     render() {
@@ -33,10 +40,10 @@ class ListView extends React.Component {
             <div key={index} >
                 <InputGroup className="mb-3 input-group">
                     <InputGroup.Prepend>
-                    <InputGroup.Checkbox aria-label="Checkbox" value={false} onClick="" checked={this.value} />
+                    <InputGroup.Checkbox aria-label="Checkbox" value={todo.isCompleted} onClick={()=>this.complete(todo.text,todo.isCompleted)} checked={this.value} />
                     </InputGroup.Prepend> 
-                    <h3 >{todo.text}</h3>
-                   
+                    <h3 className={todo.isCompleted? "done": ""}>{todo.text}</h3>
+                    
                 </InputGroup>
                 <h1></h1>
             </div>
