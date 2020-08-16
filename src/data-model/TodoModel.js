@@ -1,8 +1,9 @@
 
 class TodoModel{
-    constructor(text, isCompleted){
+    constructor(id, text, isCompleted){
         this.text = text;
         this.isCompleted = isCompleted;
+        this.id = id;
     }
 
 

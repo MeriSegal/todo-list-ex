@@ -10,7 +10,9 @@ class ListView extends React.Component {
         super(props);
 
         this.state = {
-            list: []
+            list: [],
+            count: 0,
+            id: 0
         }
 
     }   
@@ -18,18 +20,21 @@ class ListView extends React.Component {
 
     updateList = (event) =>{
         if (event.keyCode === 13){  
-            this.state.list.push(new TodoModel(event.target.value, false))         
+            this.state.list.push(new TodoModel(this.state.id ,event.target.value, false))         
             this.setState({
-                list: this.state.list
+                list: this.state.list,
+                count: this.state.count+=1,
+                id: this.state.id+=1,
             }); 
         }       
     }
 
-    complete = (text, isDone) =>{
+    complete = (id, isDone) =>{
        
-        this.state.list.find(todo => todo.text === text).isCompleted =  isDone ? false:true
+        this.state.list.find(todo => todo.id === id).isCompleted =  isDone ? false:true
         this.setState({               
-            list: this.state.list
+            list: this.state.list,
+            count: isDone ? this.state.count+=1:this.state.count-=1
         });
     }
    
@@ -40,9 +45,9 @@ class ListView extends React.Component {
             <div key={index} >
                 <InputGroup className="mb-3 input-group">
                     <InputGroup.Prepend>
-                    <InputGroup.Checkbox aria-label="Checkbox" value={todo.isCompleted} onClick={()=>this.complete(todo.text,todo.isCompleted)} checked={this.value} />
+                    <InputGroup.Checkbox aria-label="Checkbox" value={todo.isCompleted} onClick={()=>this.complete(todo.id,todo.isCompleted)} checked={this.value} />
                     </InputGroup.Prepend> 
-                    <h3 className={todo.isCompleted? "done": ""}>{todo.text}</h3>
+                    <h3 className={todo.isCompleted? "done": ""}>{todo.text} </h3>
                     
                 </InputGroup>
                 <h1></h1>
@@ -53,6 +58,7 @@ class ListView extends React.Component {
             <div>
                 <InputBox update={this.updateList}/>
                 {todoList}
+                <h3>{this.state.count} tasks left</h3>
             </div>
         );
     }
