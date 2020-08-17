@@ -15,10 +15,18 @@
 }
 
 .input-group> h3{
+  position: relative;
   margin-left: 10px;
 }
 
 .done{
-  color: gray;
+  color: rgb(175, 174, 174);
   text-decoration: line-through;
+}
+
+.close{
+  color: red;
+  position: absolute;
+  right: 0; 
+  margin-right: 10px;
 }

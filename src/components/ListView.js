@@ -9,7 +9,7 @@ class ListView extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = {           
             list: [],
             count: 0,
             id: 0
@@ -20,7 +20,7 @@ class ListView extends React.Component {
 
     updateList = (event) =>{
         if (event.keyCode === 13){  
-            this.state.list.push(new TodoModel(this.state.id ,event.target.value, false))         
+            this.state.list.push(new TodoModel(this.state.id ,event.target.value, false, false))         
             this.setState({
                 list: this.state.list,
                 count: this.state.count+=1,
@@ -28,6 +28,18 @@ class ListView extends React.Component {
             }); 
         }       
     }
+
+    deleteTask = (id, isDone) =>{
+        const task = this.state.list.find(todo => todo.id === id)
+        if (task.isCompleted =  isDone){            
+            this.setState({
+                list: this.state.list.filter(todo => todo.id !== id)
+            });
+        }else{
+            console.log("alert");
+        } 
+    }
+   
 
     complete = (id, isDone) =>{
        
@@ -37,20 +49,26 @@ class ListView extends React.Component {
             count: isDone ? this.state.count+=1:this.state.count-=1
         });
     }
+
+    showX = (id, show)=>{
+        this.state.list.find(todo => todo.id === id).isShow = show
+        this.setState({               
+            list: this.state.list,
+        });
+    }
    
 
     render() {
-
+ 
         const todoList = this.state.list.map((todo, index) =>
             <div key={index} >
-                <InputGroup className="mb-3 input-group">
-                    <InputGroup.Prepend>
-                    <InputGroup.Checkbox aria-label="Checkbox" value={todo.isCompleted} onClick={()=>this.complete(todo.id,todo.isCompleted)} checked={this.value} />
+                <InputGroup onMouseOver={()=>this.showX(todo.id,true)} onMouseOut={()=>this.showX(todo.id, false)} className="mb-3 input-group">
+                    <InputGroup.Prepend >
+                    <InputGroup.Checkbox aria-label="Checkbox" value={todo.isCompleted} onClick={()=>this.complete(todo.id,todo.isCompleted)} checked={todo.isCompleted} />
                     </InputGroup.Prepend> 
                     <h3 className={todo.isCompleted? "done": ""}>{todo.text} </h3>
-                    
-                </InputGroup>
-                <h1></h1>
+                    <button style= {{"visibility":  todo.isShow ?  "visible": "hidden" }} type="button" className="close" onClick={()=>this.deleteTask(todo.id,todo.isCompleted)} aria-label="Close"> <span aria-hidden="true" >&times;</span> </button>
+                </InputGroup>                
             </div>
             );
 
@@ -58,7 +76,10 @@ class ListView extends React.Component {
             <div>
                 <InputBox update={this.updateList}/>
                 {todoList}
-                <h3>{this.state.count} tasks left</h3>
+                <div>
+                    <h3>{this.state.count} tasks left</h3>
+                    
+                </div>               
             </div>
         );
     }
