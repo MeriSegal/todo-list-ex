@@ -3,13 +3,13 @@
 }
 
 .form-group{
-  width: 500px;
+  width: 600px;
   margin: auto;
   margin-bottom: 20px;
 }
 
 .input-group{
-  width: 500px;
+  width: 600px;
   margin: auto;
   border-bottom: solid rgb(202, 201, 201) 1px;
 }
@@ -29,4 +29,38 @@
   position: absolute;
   right: 0; 
   margin-right: 10px;
+}
+
+.footer{
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+}
+
+.selector{
+  display: flex;
+  justify-content: space-between;
+}
+
+.selector> button{
+  margin-left: 10px;
+  border: hidden;
+  outline: none;
+  background-color: transparent;
+}
+
+.selected{ 
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px red solid;
+}
+
+.react-confirm-alert-body{
+  color: red;
+  background-color: rgb(203, 209, 219);
+}
+
+.react-confirm-alert-button-group > button{
+  background-color: rgba(55, 55, 116, 0.884);
 }

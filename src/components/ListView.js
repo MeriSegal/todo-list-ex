@@ -2,7 +2,8 @@ import React from 'react';
 import InputBox from './InputBox';
 import TodoModel from '../data-model/TodoModel';
 import {InputGroup} from 'react-bootstrap'
-
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
 
 class ListView extends React.Component {
 
@@ -12,7 +13,8 @@ class ListView extends React.Component {
         this.state = {           
             list: [],
             count: 0,
-            id: 0
+            id: 0,
+            select: "all"
         }
 
     }   
@@ -29,6 +31,7 @@ class ListView extends React.Component {
         }       
     }
 
+   
     deleteTask = (id, isDone) =>{
         const task = this.state.list.find(todo => todo.id === id)
         if (task.isCompleted =  isDone){            
@@ -36,11 +39,25 @@ class ListView extends React.Component {
                 list: this.state.list.filter(todo => todo.id !== id)
             });
         }else{
-            console.log("alert");
+            confirmAlert({
+                title: 'Confirm to delete unfinished task: ',
+                message: 'Are you sure you want to delete an unfinished task?',
+                buttons: [
+                  {
+                    label: 'Yes',
+                    onClick: () => this.setState({
+                        list: this.state.list.filter(todo => todo.id !== id),
+                        count: this.state.count-=1
+                    })
+                  },
+                  {
+                    label: 'No',
+                  }
+                ]
+              })
         } 
     }
    
-
     complete = (id, isDone) =>{
        
         this.state.list.find(todo => todo.id === id).isCompleted =  isDone ? false:true
@@ -57,10 +74,23 @@ class ListView extends React.Component {
         });
     }
    
+    filterSelect = (selected) =>{
+        this.setState({               
+            select: this.state.select= selected
+        });
+    }
 
     render() {
- 
-        const todoList = this.state.list.map((todo, index) =>
+
+        const list = this.state.list;
+
+        let filterList = list
+        if(this.state.select == "active" ){
+            filterList = list.filter(item => (item.isCompleted==false))
+        }else if(this.state.select == "completed"){
+            filterList = list.filter(item => (item.isCompleted==true))
+        }
+        const todoList = filterList.map((todo, index) =>
             <div key={index} >
                 <InputGroup onMouseOver={()=>this.showX(todo.id,true)} onMouseOut={()=>this.showX(todo.id, false)} className="mb-3 input-group">
                     <InputGroup.Prepend >
@@ -76,9 +106,13 @@ class ListView extends React.Component {
             <div>
                 <InputBox update={this.updateList}/>
                 {todoList}
-                <div>
+                <div className="footer">
                     <h3>{this.state.count} tasks left</h3>
-                    
+                    <div className="selector">
+                        <button type="button" onClick={()=>this.filterSelect("all")}> <h5 className={this.state.select === "all" ? "selected":""}>All</h5> </button>
+                        <button type="button" onClick={()=>this.filterSelect("active")}> <h5 className={this.state.select === "active" ? "selected":""} >Active</h5> </button>
+                        <button type="button" onClick={()=>this.filterSelect("completed")}> <h5 className={this.state.select === "completed" ? "selected":""}>Completed</h5> </button>
+                    </div>
                 </div>               
             </div>
         );
