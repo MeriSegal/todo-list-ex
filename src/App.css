@@ -1,15 +1,16 @@
 .App {
   text-align: center;
+  padding:5%
 }
 
 .form-group{
-  width: 600px;
+  max-width: 600px;
   margin: auto;
   margin-bottom: 20px;
 }
 
 .input-group{
-  width: 600px;
+  max-width: 600px;
   margin: auto;
   border-bottom: solid rgb(202, 201, 201) 1px;
 }
@@ -41,6 +42,7 @@
 .selector{
   display: flex;
   justify-content: space-between;
+  margin-right: 25%;
 }
 
 .selector> button{
@@ -63,4 +65,11 @@
 
 .react-confirm-alert-button-group > button{
   background-color: rgba(55, 55, 116, 0.884);
+}
+
+@media screen and (min-width: 701px) {
+  .selector{   
+    margin-right: 0;
+  }
+
 }
